@@ -1,26 +1,43 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      counter: 0,
+      attemptedToGoBelowZero: false,
+    };
+  }
+
+  render() {
+    const { counter, attemptedToGoBelowZero } = this.state;
+    return (
+      <div className="App" data-test="component-app">
+        <h1 data-test="counter-display">The counter is: {counter}</h1>
+        {attemptedToGoBelowZero && <h2 data-test="warning-message">Hey man!</h2>}
+        <button data-test="increment-button" onClick={() => {
+          if (attemptedToGoBelowZero) {
+            this.setState({ attemptedToGoBelowZero: false });
+          }
+          this.setState({ counter: counter + 1 })}}>
+          Increment
+        </button>
+        <button
+          data-test="decrement-button"
+          onClick={() => {
+            if (counter === 0) {
+              this.setState({ attemptedToGoBelowZero: true });
+              return;
+            }
+            this.setState({ counter: counter - 1 });
+          }}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+          Decrement
+        </button>
+      </div>
+    );
+  }
 }
 
 export default App;
